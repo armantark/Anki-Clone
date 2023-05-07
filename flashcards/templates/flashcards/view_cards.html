@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %} - View Words{% endblock %}
+
+{% load custom_filters %}
+{% load time_remaining %}
+
+{% block content %}
+    <h1>View Cards</h1>
+    {% if DEBUG %}
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="make_ready" value="true">Make Ready</button>
+        </form>
+    {% endif %}
+    <table>
+        <thead>
+        <tr>
+            <th>Word ||</th>
+            <th>Definition ||</th>
+            <th>Bin ||</th>
+            <th>Time to Next Appearance ||</th>
+            <th>Incorrect Count ||</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for card in cards %}
+            <tr>
+                <td>{{ card.word }}</td>
+                <td>{{ card.definition }}</td>
+                <td>
+                    {{ card.bin }} ({{ bin_time_mapping|get_item:card.bin }})
+                </td>
+                <td>{{ card.next_review|time_remaining }}</td>
+                <td>{{ card.incorrect_count }}</td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+{% endblock %}

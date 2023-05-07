@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anki Clone{% block title %}{% endblock %}</title>
+    {% block extra_head %}{% endblock %}
+    <link rel="stylesheet" href="/static/css/main.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="{% url 'flashcards:create_word' %}">Create Word</a>
+            <a href="{% url 'flashcards:view_cards' %}">View Cards</a>
+            <!-- Add more navigation links as needed -->
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

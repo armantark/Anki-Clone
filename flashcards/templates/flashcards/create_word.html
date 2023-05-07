@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %} - Create Word{% endblock %}
+
+{% block content %}
+  <h1>Create a Word</h1>
+  <form method="post" action="">
+    {% csrf_token %}
+    <label for="word">Word:</label>
+    <input type="text" name="word" id="word" required>
+    <br>
+    <label for="definition">Definition:</label>
+    <textarea name="definition" id="definition" required></textarea>
+    <br>
+    <input type="submit" value="Create Word">
+  </form>
+{% endblock %}

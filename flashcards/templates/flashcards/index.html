@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %} - Learn Words{% endblock %}
+
+{% block content %}
+    {% if word %}
+        <h1>{{ word.word }}</h1>
+        <button id="show-definition-button">Show Definition</button>
+        <div id="definition" style="display:none;">
+            <p>{{ word.definition }}</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" name="got_it" value="true">I got it</button>
+                <button type="submit" name="got_it" value="false">I did not get it</button>
+            </form>
+        </div>
+        <script>
+            document.getElementById("show-definition-button").addEventListener("click", function() {
+                document.getElementById("definition").style.display = "block";
+            });
+        </script>
+    {% else %}
+        <h1>{{ message }}</h1>
+    {% endif %}
+{% endblock %}
