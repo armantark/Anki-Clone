@@ -1,5 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
+
 from .models import Word
 import datetime
 
@@ -25,23 +27,72 @@ class AdminInterfaceTests(TestCase):
         # Check if the user was redirected to the index page after creating the word
         self.assertRedirects(response, reverse('flashcards:index'))
 
+    def setUp(self):
+        # Create some sample word data for testing
+        Word.objects.create(word="sample_word_1", definition="sample_definition_1")
+        Word.objects.create(word="sample_word_2", definition="sample_definition_2")
+        Word.objects.create(word="sample_word_3", definition="sample_definition_3")
+
     def test_view_cards(self):
-        pass  # Write test logic here
+        # Define the URL for viewing cards
+        view_cards_url = reverse('flashcards:view_cards')
+
+        # Access the view cards URL via a GET request
+        response = self.client.get(view_cards_url)
+
+        # Check if the response has a status code of 200 (OK)
+        self.assertEqual(response.status_code, 200)
+
+        # Check if the response contains the correct word data
+        self.assertContains(response, "sample_word_1")
+        self.assertContains(response, "sample_definition_1")
+        self.assertContains(response, "sample_word_2")
+        self.assertContains(response, "sample_definition_2")
+        self.assertContains(response, "sample_word_3")
+        self.assertContains(response, "sample_definition_3")
+
+        # Check if the response uses the correct template
+        self.assertTemplateUsed(response, 'flashcards/view_cards.html')
 
 
 class FlashcardLogicTests(TestCase):
+    def setUp(self):
+        # Create some sample word data for testing
+        self.word = Word.objects.create(word="test", definition="test definition")
+
     def test_initial_bin(self):
-        word = Word.objects.create(word="test", definition="test definition")
-        self.assertEqual(word.bin, 0)
+        self.assertEqual(self.word.bin, 0)
 
     def test_moving_between_bins(self):
-        pass  # Write test logic here
+        # Simulate getting the word right and moving up bins
+        self.word.bin = 1
+        self.word.save()
+        self.assertEqual(self.word.bin, 1)
+
+        # Simulate getting the word wrong and moving back to bin 1
+        self.word.bin = 5
+        self.word.save()
+        self.word.bin = 1
+        self.word.save()
+        self.assertEqual(self.word.bin, 1)
 
     def test_reviewing_words(self):
-        pass  # Write test logic here
+        # Set next_review to a past time
+        past_time = timezone.now() - datetime.timedelta(minutes=5)
+        self.word.next_review = past_time
+        self.word.save()
+
+        words_to_review = Word.objects.filter(next_review__lte=timezone.now()).order_by('-bin')
+        self.assertEqual(words_to_review.first(), self.word)
 
     def test_forgetting_words(self):
-        pass  # Write test logic here
+        # Simulate getting the word wrong 10 times
+        self.word.incorrect_count = 10
+        self.word.bin = -1
+        self.word.save()
+
+        # Check if the word is in the "hard to remember" bin
+        self.assertEqual(self.word.bin, -1)
 
 
 class UserInteractionTests(TestCase):
