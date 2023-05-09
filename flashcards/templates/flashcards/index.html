@@ -4,22 +4,33 @@
 
 {% block content %}
     {% if word %}
+        <!-- Display the word to review -->
         <h1>{{ word.word }}</h1>
+
+        <!-- Button to show the definition of the word -->
         <button id="show-definition-button">Show Definition</button>
+
+        <!-- Hidden div containing the definition and buttons for user input -->
         <div id="definition" style="display:none;">
+            <!-- Display the definition of the word -->
             <p>{{ word.definition }}</p>
+
+            <!-- Form for submitting user input (got it/didn't get it) -->
             <form method="post">
                 {% csrf_token %}
                 <button type="submit" name="got_it" value="true">I got it</button>
                 <button type="submit" name="got_it" value="false">I did not get it</button>
             </form>
         </div>
+
+        <!-- JavaScript to show the definition when the button is clicked -->
         <script>
             document.getElementById("show-definition-button").addEventListener("click", function() {
                 document.getElementById("definition").style.display = "block";
             });
         </script>
     {% else %}
+        <!-- Display the appropriate status message -->
         <h1>{{ message }}</h1>
     {% endif %}
 {% endblock %}

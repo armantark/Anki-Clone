@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Base directory of the Django project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -23,13 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@6mh@$+0#vw0!8e3^m@c3j-hgpcxjhyctbdf$!oy#x*=smp#4l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# Change this value to False when deploying to a production environment
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
 
 # Application definition
-
+# Add your application name here
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -73,7 +75,7 @@ WSGI_APPLICATION = 'Anki_Clone.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+# PostgreSQL database settings
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

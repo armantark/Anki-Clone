@@ -44,5 +44,19 @@ class Word(models.Model):
             words_to_review = cls.objects.filter(bin=0)
         return words_to_review
 
+    @staticmethod
+    def get_message():
+        all_words_count = Word.objects.count()
+        completed_words_count = Word.objects.filter(bin__in=[11, -1]).count()
+        words_to_review_count = Word.get_words_to_review().count()
+
+        if words_to_review_count == 0:
+            if completed_words_count == all_words_count:
+                return "You have no more words to review; you are permanently done!"
+            else:
+                return "You are temporarily done; please come back later to review more words."
+        else:
+            return None
+
     def __str__(self):
         return self.word

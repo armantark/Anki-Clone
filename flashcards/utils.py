@@ -8,7 +8,7 @@ bin_time_mapping = {
     7: "1 day",
     8: "5 days",
     9: "25 days",
-    10: "120 days",
+    10: "4 months",
     11: "No more reviews",
     -1: "Hard to remember",
     0: "Not yet reviewed",

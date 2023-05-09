@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
+    # Default Django admin site URL
     path('admin/', admin.site.urls),
+    # Include the URL patterns from the 'flashcards' app
     path('', include('flashcards.urls')),
 ]

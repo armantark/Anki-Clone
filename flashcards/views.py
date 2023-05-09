@@ -18,11 +18,8 @@ def index(request):
     words_to_review = Word.get_words_to_review()
 
     # Show a message if there are no words to review and no words in bin 0
-    if not words_to_review.exists():
-        message = "You are temporarily done; please come back later to review more words."
-        all_words = Word.objects.all()
-        if all_words.filter(bin__in=[11, -1]).count() == all_words.count():
-            message = "You have no more words to review; you are permanently done!"
+    message = Word.get_message()
+    if message:
         return render(request, 'flashcards/index.html', {'message': message})
 
     # Select the first word to review
