@@ -96,14 +96,27 @@ class FlashcardLogicTests(TestCase):
 
 
 class UserInteractionTests(TestCase):
-    def test_display_word(self):
-        pass  # Write test logic here
+    def setUp(self):
+        self.word = Word.objects.create(word="test", definition="test definition")
 
-    def test_show_definition(self):
-        pass  # Write test logic here
+    def test_display_word(self):
+        response = self.client.get(reverse('flashcards:index'))
+        self.assertContains(response, 'test')
 
     def test_got_it_or_not(self):
-        pass  # Write test logic here
+        response_got_it = self.client.post(reverse('flashcards:index'), {'got_it': 'true'})
+        self.assertContains(response_got_it, 'test')  # Assuming the page is reloaded after answering
+
+        response_not_got_it = self.client.post(reverse('flashcards:index'), {'got_it': 'false'})
+        self.word.refresh_from_db()  # Reload the word object from the database
+        self.assertContains(response_not_got_it, 'test')  # Assuming the page is reloaded after answering
 
     def test_status_messages(self):
-        pass  # Write test logic here
+        # Temporarily done message
+        # Move the word to bin 11 so that there are no words left to review
+        self.word.bin = 11
+        self.word.next_review = None
+        self.word.save()
+
+        response = self.client.get(reverse('flashcards:index'))
+        self.assertContains(response, "You are temporarily done; please come back later to review more words.")

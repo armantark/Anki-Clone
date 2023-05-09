@@ -1,3 +1,9 @@
 5:30-6:30 pm Fri May 5 (setup)
 9:00-9:40 pm Fri May 5 (setting up database)
 6:30-7:30 pm Sat May 6 (tweaking "time to next appearance" column in view cards table + test cases)
+5:00- Monday May 8
+
+Optional features implemented:
+- using specific stack (Django + Postgres, HTML+CSS for frontend atm)
+- documentation
+- automated testing

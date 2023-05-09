@@ -17,7 +17,11 @@ def index(request):
     if not words_to_review.exists():
         words_to_review = Word.objects.filter(bin=0)
 
-    # Show a message if there are no words to review and no words in bin 0
+    # If there are still no words to review, include words in bin 1
+    if not words_to_review.exists():
+        words_to_review = Word.objects.filter(bin=1)
+
+    # Show a message if there are no words to review and no words in bin 0 or bin 1
     if not words_to_review.exists():
         message = "You are temporarily done; please come back later to review more words."
         return render(request, 'flashcards/index.html', {'message': message})
