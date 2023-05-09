@@ -15,11 +15,7 @@ from .utils import bin_time_mapping
 
 def index(request):
     # Get words that need to be reviewed, prioritizing higher-numbered bins
-    words_to_review = Word.objects.filter(next_review__lte=datetime.datetime.now()).order_by('-bin', 'next_review')
-
-    # Get a word from bin 0 if there are no words to review
-    if not words_to_review.exists():
-        words_to_review = Word.objects.filter(bin=0)
+    words_to_review = Word.get_words_to_review()
 
     # Show a message if there are no words to review and no words in bin 0
     if not words_to_review.exists():

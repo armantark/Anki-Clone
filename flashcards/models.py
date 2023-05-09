@@ -37,5 +37,12 @@ class Word(models.Model):
 
         self.save()
 
+    @classmethod
+    def get_words_to_review(cls):
+        words_to_review = cls.objects.filter(next_review__lte=datetime.datetime.now()).order_by('-bin', 'next_review')
+        if not words_to_review.exists():
+            words_to_review = cls.objects.filter(bin=0)
+        return words_to_review
+
     def __str__(self):
         return self.word

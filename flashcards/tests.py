@@ -141,12 +141,23 @@ class UserInteractionTests(TestCase):
         word2.refresh_from_db()
         self.assertEqual(word2.bin, 1)  # The word should move from bin 0 to bin 1
 
-    def test_status_messages(self):
+    def test_temporarily_done_message(self):
         # Temporarily done message
-        # Move the word to bin 11 so that there are no words left to review
-        self.word.bin = 11
+        # Move the word to bin 5 so that there are no words left to review
+        self.word.bin = 5
         self.word.next_review = datetime.datetime.now() + datetime.timedelta(days=1)
         self.word.save()
 
         response = self.client.get(reverse('flashcards:index'))
         self.assertContains(response, "You are temporarily done; please come back later to review more words.")
+
+    def test_permanently_done_message(self):
+        # Permanently done message
+        # Move the word to bin 11 so that there are no words left to review
+        self.word.bin = 11
+        self.word.next_review = None
+        self.word.save()
+
+        response = self.client.get(reverse('flashcards:index'))
+        self.assertContains(response, "You have no more words to review; you are permanently done!")
+
