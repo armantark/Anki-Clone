@@ -31,8 +31,14 @@ def time_remaining(value):
         time_str += f'{hours}h '
     if minutes:
         time_str += f'{minutes}m '
-    if seconds or not time_str:
+
+    # Remove the space before the seconds when the word is ready for review
+    if time_difference.total_seconds() <= 0:
         time_str += f'{seconds}s'
+    else:
+        time_str += f' {seconds}s'
+
     time_str += suffix
 
     return time_str
+

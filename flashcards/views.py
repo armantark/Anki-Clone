@@ -2,6 +2,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render, redirect
+from django.urls import reverse
+
 from .models import Word
 from .forms import WordForm
 import datetime
@@ -66,6 +68,9 @@ def index(request):
 
         word.save()
 
+        # Redirect to the index view with updated words
+        return redirect(reverse('flashcards:index'))
+
     return render(request, 'flashcards/index.html', {'word': word})
 
 
@@ -82,7 +87,7 @@ def create_word(request):
 
 def view_cards(request):
     if settings.DEBUG and request.method == 'POST' and request.POST.get('make_ready'):
-        cards = Word.objects.all()
+        cards = Word.objects.exclude(bin__in=[-1, 11])  # Exclude words in bins -1 and 11
         for card in cards:
             card.next_review = timezone.now()
             card.save()
