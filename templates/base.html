@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anki Clone{% block title %}{% endblock %}</title>
     {% block extra_head %}{% endblock %}
     <link rel="stylesheet" href="/static/css/main.css">
 </head>
-<body>
-    <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="{% url 'flashcards:create_word' %}">Create Word</a>
-            <a href="{% url 'flashcards:view_cards' %}">View Cards</a>
-            <!-- Add more navigation links as needed -->
-        </nav>
-    </header>
+<body class="bg-light">
+<header>
+    <nav>
+        <a href="/" class="nav-link">Home</a>
+        <a href="{% url 'flashcards:create_word' %}" class="nav-link">Create Word</a>
+        <a href="{% url 'flashcards:view_cards' %}" class="nav-link">View Cards</a>
+        <!-- Add more navigation links as needed -->
+    </nav>
+</header>
 
+<div class="container my-5">
     <main>
         {% block content %}{% endblock %}
     </main>
+</div>
 
-    {% block extra_scripts %}{% endblock %}
+{% block extra_scripts %}{% endblock %}
 </body>
 </html>

@@ -1,29 +1,42 @@
+<!-- Extends the base.html template -->
 {% extends "base.html" %}
 
+<!-- Set the title block with the suffix ' - View Words' -->
 {% block title %} - View Words{% endblock %}
 
+<!-- Load custom filters and time_remaining tags -->
 {% load custom_filters %}
 {% load time_remaining %}
 
+<!-- Start the content block -->
 {% block content %}
+    <!-- Display the heading 'View Cards' -->
     <h1>View Cards</h1>
+    
+    <!-- Check if DEBUG is true and display the 'Make Ready' button -->
     {% if DEBUG %}
         <form method="post">
             {% csrf_token %}
             <button type="submit" name="make_ready" value="true">Make Ready</button>
         </form>
     {% endif %}
-    <table>
+    
+    <!-- Create a table to display the cards -->
+    <table id="wordsTable" class="table table-striped">
+        <!-- Table header with column names -->
         <thead>
         <tr>
-            <th>Word ||</th>
-            <th>Definition ||</th>
-            <th>Bin ||</th>
-            <th>Time to Next Appearance ||</th>
-            <th>Incorrect Count ||</th>
+            <th>Word</th>
+            <th>Definition</th>
+            <th>Bin</th>
+            <th>Time to Next Appearance</th>
+            <th>Incorrect Count</th>
         </tr>
         </thead>
+        
+        <!-- Table body with card data -->
         <tbody>
+        <!-- Loop through each card and display its data in a table row -->
         {% for card in cards %}
             <tr>
                 <td>{{ card.word }}</td>
@@ -38,4 +51,5 @@
 
         </tbody>
     </table>
+<!-- End the content block -->
 {% endblock %}
