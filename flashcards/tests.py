@@ -130,13 +130,14 @@ class UserInteractionTests(TestCase):
         word2 = Word.objects.create(word='test2', definition='test_definition2', bin=0)
 
         # Test if clicking "I did not get it" processes the response correctly for the first word
-        response_not_got_it = self.client.post(reverse('flashcards:index'), {'got_it': 'false'})
+        response_not_got_it = self.client.post(reverse('flashcards:index'),
+                                               {'got_it': 'false', 'word_id': self.word.id})
         self.word.refresh_from_db()
         self.assertEqual(self.word.bin, 1)  # The word should move from bin 0 to bin 1
         self.assertEqual(self.word.incorrect_count, 1)  # The incorrect_count should increment by 1
 
         # Test if clicking "I got it" processes the response correctly for the second word
-        response_got_it = self.client.post(reverse('flashcards:index'), {'got_it': 'true'})
+        response_got_it = self.client.post(reverse('flashcards:index'), {'got_it': 'true', 'word_id': word2.id})
         word2.refresh_from_db()
         self.assertEqual(word2.bin, 1)  # The word should move from bin 0 to bin 1
 
@@ -144,7 +145,7 @@ class UserInteractionTests(TestCase):
         # Temporarily done message
         # Move the word to bin 11 so that there are no words left to review
         self.word.bin = 11
-        self.word.next_review = None
+        self.word.next_review = datetime.datetime.now() + datetime.timedelta(days=1)
         self.word.save()
 
         response = self.client.get(reverse('flashcards:index'))
