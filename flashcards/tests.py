@@ -94,6 +94,28 @@ class FlashcardLogicTests(TestCase):
         # Check if the word is in the "hard to remember" bin
         self.assertEqual(self.word.bin, -1)
 
+    def test_review_order(self):
+        # Create two additional words
+        word2 = Word.objects.create(word="test2", definition="test definition 2", bin=3, next_review=timezone.now())
+        word3 = Word.objects.create(word="test3", definition="test definition 3", bin=5, next_review=timezone.now())
+
+        # Access the index URL via a GET request
+        response = self.client.get(reverse('flashcards:index'))
+
+        # Check if the word with the higher bin is shown first
+        self.assertContains(response, 'test3')
+
+        # Mark word3 as "I got it" and set the next_review for word3 to the future
+        word3.bin = 6
+        word3.next_review = timezone.now() + datetime.timedelta(minutes=10)
+        word3.save()
+
+        # Access the index URL via a GET request again
+        response = self.client.get(reverse('flashcards:index'))
+
+        # Check if the word with the next highest bin is shown
+        self.assertContains(response, 'test2')
+
 
 class UserInteractionTests(TestCase):
     def setUp(self):
@@ -104,12 +126,19 @@ class UserInteractionTests(TestCase):
         self.assertContains(response, 'test')
 
     def test_got_it_or_not(self):
-        response_got_it = self.client.post(reverse('flashcards:index'), {'got_it': 'true'})
-        self.assertContains(response_got_it, 'test')  # Assuming the page is reloaded after answering
+        # Create a second word
+        word2 = Word.objects.create(word='test2', definition='test_definition2', bin=0)
 
+        # Test if clicking "I did not get it" processes the response correctly for the first word
         response_not_got_it = self.client.post(reverse('flashcards:index'), {'got_it': 'false'})
-        self.word.refresh_from_db()  # Reload the word object from the database
-        self.assertContains(response_not_got_it, 'test')  # Assuming the page is reloaded after answering
+        self.word.refresh_from_db()
+        self.assertEqual(self.word.bin, 1)  # The word should move from bin 0 to bin 1
+        self.assertEqual(self.word.incorrect_count, 1)  # The incorrect_count should increment by 1
+
+        # Test if clicking "I got it" processes the response correctly for the second word
+        response_got_it = self.client.post(reverse('flashcards:index'), {'got_it': 'true'})
+        word2.refresh_from_db()
+        self.assertEqual(word2.bin, 1)  # The word should move from bin 0 to bin 1
 
     def test_status_messages(self):
         # Temporarily done message

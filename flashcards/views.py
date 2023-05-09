@@ -10,20 +10,19 @@ from django.utils import timezone
 
 
 def index(request):
-    # Get words that need to be reviewed
-    words_to_review = Word.objects.filter(next_review__lte=datetime.datetime.now()).order_by('-bin')
+    # Get words that need to be reviewed, prioritizing higher-numbered bins
+    words_to_review = Word.objects.filter(next_review__lte=datetime.datetime.now()).order_by('-bin', 'next_review')
 
     # Get a word from bin 0 if there are no words to review
     if not words_to_review.exists():
         words_to_review = Word.objects.filter(bin=0)
 
-    # If there are still no words to review, include words in bin 1
-    if not words_to_review.exists():
-        words_to_review = Word.objects.filter(bin=1)
-
-    # Show a message if there are no words to review and no words in bin 0 or bin 1
+    # Show a message if there are no words to review and no words in bin 0
     if not words_to_review.exists():
         message = "You are temporarily done; please come back later to review more words."
+        all_words = Word.objects.all()
+        if all_words.filter(bin__in=[11, -1]).count() == all_words.count():
+            message = "You have no more words to review; you are permanently done!"
         return render(request, 'flashcards/index.html', {'message': message})
 
     # Select the first word to review
@@ -32,13 +31,22 @@ def index(request):
     # Handle user input (got it/didn't get it) using POST request
     if request.method == 'POST':
         got_it = request.POST.get('got_it') == 'true'
-        if got_it:
-            # Move the word to the next bin, up to bin 11
-            word.bin = min(word.bin + 1, 11)
-        else:
-            # Move the word back to bin 1 and increment incorrect_count
-            word.bin = 1
-            word.incorrect_count += 1
+        word_id = request.POST.get('word_id')
+        if word_id:
+            if got_it:
+                # Move the word to the next bin, up to bin 11
+                word.bin = min(word.bin + 1, 11)
+            else:
+                word.incorrect_count += 1
+
+                # Check if the word has reached 10 incorrect counts
+                if word.incorrect_count >= 10:
+                    word.bin = -1
+                else:
+                    word.bin = 1
+
+                word.save()
+                word.set_next_review()
 
         # Update the next_review time based on the word's bin
         time_deltas = [datetime.timedelta(seconds=5), datetime.timedelta(seconds=25), datetime.timedelta(minutes=2),
