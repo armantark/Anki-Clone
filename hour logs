@@ -3,9 +3,9 @@
 6:30-7:30 pm Sat May 6 (tweaking "time to next appearance" column in view cards table + test cases)
 5:00-6:00 Monday May 8 (fixing/adding new tests, fixing bugs)
 7:30-8:45 (refactoring and commenting a little, bootstrap)
-8:00- (continuing to add comments, continuous integration testing, adding -RUD to admin page)
+8:00-9:15 (continuing to add comments, continuous integration testing, adding -RUD to admin page)
 
 Optional features implemented:
 - using specific stack (Django + Postgres, HTML+CSS+Django hooks for frontend atm)
-- documentation
-- automated testing
+- documentation (comments and readme)
+- automated testing (GitHub Actions)

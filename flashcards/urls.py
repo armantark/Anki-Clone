@@ -11,8 +11,9 @@ app_name = 'flashcards'
 urlpatterns = [
     # Create a URL pattern for the index view
     path('', views.index, name='index'),
-    # Create a URL pattern for the create_word view
-    path('create_word/', views.create_word, name='create_word'),
+    # Create a URL pattern for the manage_words view
+    path('manage_words/', views.manage_words, name='manage_words'),
+    path('manage_words/<int:word_id>/', views.manage_words, name='manage_words_with_id'),
     # Create a URL pattern for the view_cards view
     path('view_cards/', views.view_cards, name='view_cards'),
 ]

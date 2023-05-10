@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %} - Manage Words{% endblock %}
+
+{% block content %}
+  <!-- Heading for the manage words page -->
+  <h1>Manage Words</h1>
+
+  <!-- Form for creating/updating a word -->
+  <form method="post" action="">
+    {% csrf_token %}
+    <label for="word">Word:</label>
+    <input type="text" name="word" id="word" required value="{{ word.word }}">
+    <br><br>
+    <label for="definition">Definition:</label>
+    <textarea name="definition" id="definition" required>{{ word.definition }}</textarea>
+    <br>
+    <input type="submit" value="Save Word">
+  </form>
+
+  <!-- List of existing words -->
+  <h2>Existing Words</h2>
+  <ul>
+    {% for word in words %}
+      <li>
+        <a href=" {% url 'flashcards:manage_words_with_id' word.id %} ">{{ word.word }}</a>
+        <form method="post" action="{% url 'flashcards:delete_word' word.id %}">
+          {% csrf_token %}
+          <input type="submit" value="Delete">
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

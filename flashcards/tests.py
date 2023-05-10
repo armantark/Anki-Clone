@@ -9,7 +9,7 @@ import datetime
 class AdminInterfaceTests(TestCase):
     def test_create_single_word_and_definition(self):
         # Define the URL for creating a word and definition
-        create_word_url = reverse('flashcards:create_word')
+        create_word_url = reverse('flashcards:manage_words')
 
         # Define the word and definition data to be submitted via the form
         word_data = {
