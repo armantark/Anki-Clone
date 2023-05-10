@@ -1,3 +1,4 @@
+# A constant dictionary of what times each bin maps to
 bin_time_mapping = {
     1: "5 seconds",
     2: "25 seconds",

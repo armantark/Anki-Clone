@@ -1,15 +1,11 @@
-from django.shortcuts import render
-
-# Create your views here.
+# Import necessary modules and functions
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.urls import reverse
-
-from .models import Word
-from .forms import WordForm
-import datetime
-from django.conf import settings
 from django.utils import timezone
 
+from .forms import WordForm
+from .models import Word
 from .utils import bin_time_mapping
 
 
@@ -37,6 +33,7 @@ def index(request):
 
 
 def create_word(request):
+    # Handle form submission for creating a new word
     if request.method == 'POST':
         form = WordForm(request.POST)
         if form.is_valid():
@@ -48,12 +45,13 @@ def create_word(request):
 
 
 def view_cards(request):
+    # Make all cards ready for review in DEBUG mode
     if settings.DEBUG and request.method == 'POST' and request.POST.get('make_ready'):
         cards = Word.objects.exclude(bin__in=[-1, 11])  # Exclude words in bins -1 and 11
         for card in cards:
             card.next_review = timezone.now()
             card.save()
-
+    # Get all cards and render them in the view
     cards = Word.objects.all()
     return render(request, 'flashcards/view_cards.html',
                   {'cards': cards, 'bin_time_mapping': bin_time_mapping, 'DEBUG': settings.DEBUG})

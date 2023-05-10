@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Latest compiled and minified CSS -->
+    <!-- Include Bootstrap CSS and JavaScript -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!-- Set character encoding and viewport settings -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Set the title of the webpage, with an optional block for extra title content -->
     <title>Anki Clone{% block title %}{% endblock %}</title>
+
+    <!-- Allow for extra head content to be included -->
     {% block extra_head %}{% endblock %}
+
+    <!-- Include the main.css file for custom styles -->
     <link rel="stylesheet" href="/static/css/main.css">
 </head>
 <body class="bg-light">
 <header>
     <nav>
+        <!-- Navigation links -->
         <a href="/" class="nav-link">Home</a>
         <a href="{% url 'flashcards:create_word' %}" class="nav-link">Create Word</a>
         <a href="{% url 'flashcards:view_cards' %}" class="nav-link">View Cards</a>
@@ -21,12 +29,15 @@
     </nav>
 </header>
 
+<!-- Main content container -->
 <div class="container my-5">
     <main>
+        <!-- Allow for custom content to be included -->
         {% block content %}{% endblock %}
     </main>
 </div>
 
+<!-- Allow for extra scripts to be included -->
 {% block extra_scripts %}{% endblock %}
 </body>
 </html>
