@@ -145,7 +145,7 @@ class UserInteractionTests(TestCase):
         # Temporarily done message
         # Move the word to bin 5 so that there are no words left to review
         self.word.bin = 5
-        self.word.next_review = datetime.datetime.now() + datetime.timedelta(days=1)
+        self.word.next_review = timezone.now() + datetime.timedelta(days=1)
         self.word.save()
 
         response = self.client.get(reverse('flashcards:index'))
