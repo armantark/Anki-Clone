@@ -35,5 +35,5 @@ jobs:
       run: |
         python manage.py test
       env:
-        DJANGO_SETTINGS_MODULE: anki_clone.settings
+        DJANGO_SETTINGS_MODULE: Anki_Clone.settings
         DATABASE_URL: postgres://postgres:postgres@localhost:5432/github_actions
