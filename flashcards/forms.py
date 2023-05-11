@@ -14,6 +14,7 @@ class WordForm(ModelForm):
         # Specify the fields to be included in the form
         fields = ['word', 'definition']
 
+    # todo: make this actually work
     def clean_word(self):
         # Get the cleaned 'word' data from the form
         word = self.cleaned_data.get('word')
@@ -25,4 +26,3 @@ class WordForm(ModelForm):
 
         # Return the cleaned word data
         return word
-
