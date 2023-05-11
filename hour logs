@@ -4,7 +4,7 @@
 5:00-6:00 Monday May 8 (fixing/adding new tests, fixing bugs)
 7:30-8:45 Monday May 8 (refactoring and commenting a little, bootstrap)
 8:00-9:15 Tuesday May 9 (continuing to add comments, continuous integration testing, adding -RUD to admin page)
-5:00-5:45 pm Wednesday May 10 (fixing delete functionality)
+5:00-5:45, 9:45-10:30 pm Wednesday May 10 (fixing delete functionality)
 
 Optional features implemented:
 - using specific stack (Django + Postgres, HTML+CSS+Django hooks for frontend atm)

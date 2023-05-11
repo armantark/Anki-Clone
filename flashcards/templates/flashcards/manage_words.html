@@ -7,7 +7,7 @@
     <h1>Manage Words</h1>
     <div>
         <!-- Form for creating a word -->
-        <h1>Create New Word</h1>
+        <h4>Create New Word</h4>
         <form method="post" action="">
             {% csrf_token %}
             <label for="word">Word:</label>
@@ -19,29 +19,33 @@
             <input type="submit" value="Create Word">
         </form>
     </div>
-    <div style="display: flex; justify-content: space-between;">
+    <div style="display: flex; justify-content: flex-start">
 
         <div>
             <!-- List of existing words -->
-            <h2>Existing Words</h2>
-            <ul id="word-list">
+            <h4>Existing Words</h4>
+            <ul id="word-list" style="padding-left: 0; margin-top: 0;">
                 {% for word in words %}
-                    <li data-word="{{ word.word }}" data-definition="{{ word.definition }}">
-                        <a href="javascript:void(0)" class="word-link">{{ word.word }} - {{ word.definition }}</a>
+                    <div>
+                        <li data-id="{{ word.id }}" data-word="{{ word.word }}" data-definition="{{ word.definition }}" style="display: flex; align-items: center;">
+                            <a href="javascript:void(0)" class="word-link">{{ word.word }} - {{ word.definition }}</a>
 
-                        <form method="post" action="{% url 'flashcards:delete_word' word.id %}" class="delete-form">
-                            {% csrf_token %}
-                            <input type="submit" value="Delete" class="btn btn-danger">
-                        </form>
-                    </li>
+                            <form method="post" action="{% url 'flashcards:delete_word' word.id %}" class="delete-form" style="margin-left: -5px;">
+                                {% csrf_token %}
+                                <button type="submit" style="border: none; background: none;">
+                                    <i class="fa-regular fa-circle-xmark" style="color: #ff2600;"></i>
+                                </button>
+                            </form>
+                        </li>
+                    </div>
                 {% endfor %}
             </ul>
         </div>
 
-        <div>
+        <div style="margin-left: 10px">
             <!-- Form for updating a word (hidden by default) -->
-            <h1 id="update-heading" style="display: none;">Update Word</h1>
-            <form method="post" action="" id="update-form" style="display: none;">
+            <h4 id="update-heading" style="display: none;">Update Word</h4>
+            <form method="post" action="{% url 'flashcards:manage_words_with_id' word.id %}" id="update-form" style="display: none;">
                 {% csrf_token %}
                 <label for="word">Word:</label>
                 <input type="text" name="word" id="update-word" required>
@@ -57,35 +61,53 @@
 {% endblock %}
 
 {% block javascript %}
-    <script>
-        // Get all delete forms
-        const deleteForms = document.querySelectorAll('.delete-form');
+<script>
+    // Get all delete forms
+    const deleteForms = document.querySelectorAll('.delete-form');
 
-        // Add an event listener to each form
-        deleteForms.forEach(form => {
-            form.addEventListener('submit', function (event) {
-                // Prevent the form from submitting
-                event.preventDefault();
+    // Add an event listener to each form
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            // Prevent the form from submitting
+            event.preventDefault();
 
-                // Confirm with the user
-                const confirmDelete = confirm('Are you sure you want to delete this word? This action cannot be undone.');
+            // Confirm with the user
+            const confirmDelete = confirm('Are you sure you want to delete this word? This action cannot be undone.');
 
-                // If the user confirmed, submit the form
-                if (confirmDelete) {
-                    form.submit();
-                }
-            });
+            // If the user confirmed, submit the form
+            if (confirmDelete) {
+                form.submit();
+            }
         });
+    });
 
-        // Show the update form when a word is clicked
-        const wordLinks = document.querySelectorAll('.word-link');
-        wordLinks.forEach(link => {
-            link.addEventListener('click', function () {
-                document.getElementById('update-heading').style.display = '';
-                document.getElementById('update-form').style.display = '';
-                document.getElementById('update-word').value = this.parentElement.dataset.word;
-                document.getElementById('update-definition').value = this.parentElement.dataset.definition;
-            });
+    // Get all word links
+    const wordLinks = document.querySelectorAll('.word-link');
+
+    // Add an event listener to each word link
+    wordLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            // Prevent the link from navigating
+            event.preventDefault();
+
+            // Get the parent li element
+            const li = event.target.closest('li');
+
+            // Get the word ID from the data-id attribute of the li element
+            const wordId = li.dataset.id;
+
+            // Update the action URL of the update form
+            document.querySelector('#update-form').action = `{% url 'flashcards:manage_words' 0 %}`.replace('0', wordId);
+
+            // Update the update form fields with the word data from the li element
+            document.querySelector('#update-word').value = li.dataset.word;
+            document.querySelector('#update-definition').value = li.dataset.definition;
+
+            // Show the update form
+            document.querySelector('#update-heading').style.display = 'block';
+            document.querySelector('#update-form').style.display = 'block';
         });
-    </script>
+    });
+</script>
 {% endblock %}
+
