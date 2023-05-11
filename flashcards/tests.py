@@ -27,6 +27,8 @@ class AdminInterfaceTests(TestCase):
         # Check if the user was redirected to the index page after creating the word
         self.assertRedirects(response, reverse('flashcards:manage_words'))
 
+    # todo: add new test for update and delete
+
     def setUp(self):
         # Create some sample word data for testing
         Word.objects.create(word="sample_word_1", definition="sample_definition_1")

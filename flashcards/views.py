@@ -66,6 +66,7 @@ def manage_words(request, word_id=None):
             if form.is_valid():
                 # Save the Word instance with the submitted data
                 form.save()
+                return HttpResponseRedirect(request.path_info)
 
     # Retrieve all words for displaying
     words = Word.objects.all()
@@ -92,5 +93,3 @@ def view_cards(request):
     cards = Word.objects.all()
     return render(request, 'flashcards/view_cards.html',
                   {'cards': cards, 'bin_time_mapping': bin_time_mapping, 'DEBUG': settings.DEBUG})
-
-
