@@ -25,7 +25,7 @@ class AdminInterfaceTests(TestCase):
         self.assertIsNotNone(word)
 
         # Check if the user was redirected to the index page after creating the word
-        self.assertRedirects(response, reverse('flashcards:index'))
+        self.assertRedirects(response, reverse('flashcards:manage_words'))
 
     def setUp(self):
         # Create some sample word data for testing

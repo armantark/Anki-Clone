@@ -13,3 +13,16 @@ class WordForm(ModelForm):
         model = Word
         # Specify the fields to be included in the form
         fields = ['word', 'definition']
+
+    def clean_word(self):
+        # Get the cleaned 'word' data from the form
+        word = self.cleaned_data.get('word')
+
+        # Check if the word already exists in the Word model
+        if Word.objects.filter(word=word).exists():
+            # If it does, add an error message to the form
+            self.add_error('word', 'Warning - word already exists')
+
+        # Return the cleaned word data
+        return word
+

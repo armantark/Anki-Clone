@@ -3,32 +3,89 @@
 {% block title %} - Manage Words{% endblock %}
 
 {% block content %}
-  <!-- Heading for the manage words page -->
-  <h1>Manage Words</h1>
-
-  <!-- Form for creating/updating a word -->
-  <form method="post" action="">
-    {% csrf_token %}
-    <label for="word">Word:</label>
-    <input type="text" name="word" id="word" required value="{{ word.word }}">
-    <br><br>
-    <label for="definition">Definition:</label>
-    <textarea name="definition" id="definition" required>{{ word.definition }}</textarea>
-    <br>
-    <input type="submit" value="Save Word">
-  </form>
-
-  <!-- List of existing words -->
-  <h2>Existing Words</h2>
-  <ul>
-    {% for word in words %}
-      <li>
-        <a href=" {% url 'flashcards:manage_words_with_id' word.id %} ">{{ word.word }}</a>
-        <form method="post" action="{% url 'flashcards:delete_word' word.id %}">
-          {% csrf_token %}
-          <input type="submit" value="Delete">
+    <!-- Heading for the manage words page -->
+    <h1>Manage Words</h1>
+    <div>
+        <!-- Form for creating a word -->
+        <h1>Create New Word</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            <label for="word">Word:</label>
+            <input type="text" name="word" id="create-word" required>
+            <br><br>
+            <label for="definition">Definition:</label>
+            <textarea name="definition" id="create-definition" required></textarea>
+            <br>
+            <input type="submit" value="Create Word">
         </form>
-      </li>
-    {% endfor %}
-  </ul>
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+
+        <div>
+            <!-- List of existing words -->
+            <h2>Existing Words</h2>
+            <ul id="word-list">
+                {% for word in words %}
+                    <li data-word="{{ word.word }}" data-definition="{{ word.definition }}">
+                        <a href="javascript:void(0)" class="word-link">{{ word.word }} - {{ word.definition }}</a>
+
+                        <form method="post" action="{% url 'flashcards:delete_word' word.id %}" class="delete-form">
+                            {% csrf_token %}
+                            <input type="submit" value="Delete" class="btn btn-danger">
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            <!-- Form for updating a word (hidden by default) -->
+            <h1 id="update-heading" style="display: none;">Update Word</h1>
+            <form method="post" action="" id="update-form" style="display: none;">
+                {% csrf_token %}
+                <label for="word">Word:</label>
+                <input type="text" name="word" id="update-word" required>
+                <br><br>
+                <label for="definition">Definition:</label>
+                <textarea name="definition" id="update-definition" required></textarea>
+                <br>
+                <input type="submit" value="Update Word">
+            </form>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        // Get all delete forms
+        const deleteForms = document.querySelectorAll('.delete-form');
+
+        // Add an event listener to each form
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function (event) {
+                // Prevent the form from submitting
+                event.preventDefault();
+
+                // Confirm with the user
+                const confirmDelete = confirm('Are you sure you want to delete this word? This action cannot be undone.');
+
+                // If the user confirmed, submit the form
+                if (confirmDelete) {
+                    form.submit();
+                }
+            });
+        });
+
+        // Show the update form when a word is clicked
+        const wordLinks = document.querySelectorAll('.word-link');
+        wordLinks.forEach(link => {
+            link.addEventListener('click', function () {
+                document.getElementById('update-heading').style.display = '';
+                document.getElementById('update-form').style.display = '';
+                document.getElementById('update-word').value = this.parentElement.dataset.word;
+                document.getElementById('update-definition').value = this.parentElement.dataset.definition;
+            });
+        });
+    </script>
 {% endblock %}

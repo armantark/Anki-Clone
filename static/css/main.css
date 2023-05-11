@@ -1,4 +1,8 @@
 .nav-link {
-  margin-top: 5px;
-  padding: 5px;
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.word-link {
+    margin: 5px;
 }
