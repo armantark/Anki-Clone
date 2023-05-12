@@ -7,6 +7,12 @@ import datetime
 
 
 class AdminInterfaceTests(TestCase):
+    def setUp(self):
+        # Create some sample word data for testing
+        self.word_1 = Word.objects.create(word="sample_word_1", definition="sample_definition_1")
+        self.word_2 = Word.objects.create(word="sample_word_2", definition="sample_definition_2")
+        self.word_3 = Word.objects.create(word="sample_word_3", definition="sample_definition_3")
+
     def test_create_single_word_and_definition(self):
         # Define the URL for creating a word and definition
         create_word_url = reverse('flashcards:manage_words')
@@ -26,14 +32,6 @@ class AdminInterfaceTests(TestCase):
 
         # Check if the user was redirected to the index page after creating the word
         self.assertRedirects(response, reverse('flashcards:manage_words'))
-
-    # todo: add new test for update and delete
-
-    def setUp(self):
-        # Create some sample word data for testing
-        Word.objects.create(word="sample_word_1", definition="sample_definition_1")
-        Word.objects.create(word="sample_word_2", definition="sample_definition_2")
-        Word.objects.create(word="sample_word_3", definition="sample_definition_3")
 
     def test_view_cards(self):
         # Define the URL for viewing cards
@@ -55,6 +53,43 @@ class AdminInterfaceTests(TestCase):
 
         # Check if the response uses the correct template
         self.assertTemplateUsed(response, 'flashcards/view_cards.html')
+
+    def test_update_word(self):
+        # Define the URL for updating a word
+        update_word_url = reverse('flashcards:manage_words_with_id', args=[self.word_1.id])
+
+        # Define the new word data to be submitted via the form
+        new_word_data = {
+            'word_id': self.word_1.id,
+            'word': 'updated_word_1',
+            'definition': 'updated_definition_1',
+        }
+
+        # Submit the new word data via POST request
+        response = self.client.post(update_word_url, data=new_word_data)
+
+        # Reload the word from the database
+        self.word_1.refresh_from_db()
+
+        # Check if the word was updated in the database
+        self.assertEqual(self.word_1.word, new_word_data['word'])
+        self.assertEqual(self.word_1.definition, new_word_data['definition'])
+
+        # Check if the user was redirected to the manage words page with the same word id after updating the word
+        self.assertRedirects(response, reverse('flashcards:manage_words_with_id', args=[self.word_1.id]))
+
+    def test_delete_word(self):
+        # Define the URL for deleting a word
+        delete_word_url = reverse('flashcards:delete_word', args=[self.word_2.id])
+
+        # Submit a POST request to the delete word URL
+        response = self.client.post(delete_word_url)
+
+        # Check if the word was deleted from the database
+        self.assertFalse(Word.objects.filter(id=self.word_2.id).exists())
+
+        # Check if the user was redirected to the manage words page after deleting the word
+        self.assertRedirects(response, reverse('flashcards:manage_words'))
 
 
 class FlashcardLogicTests(TestCase):
@@ -162,4 +197,3 @@ class UserInteractionTests(TestCase):
 
         response = self.client.get(reverse('flashcards:index'))
         self.assertContains(response, "You have no more words to review; you are permanently done!")
-

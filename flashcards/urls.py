@@ -17,7 +17,7 @@ urlpatterns = [
     # Create a URL pattern for the delete_word function
     path('delete_word/<int:word_id>/', views.delete_word, name='delete_word'),
     # Create a URL pattern for the check_word function
-    path('check_word', views.check_word, name='check_word'),
+    path('check_word/', views.check_word, name='check_word'),
     # Create a URL pattern for the view_cards view
     path('view_cards/', views.view_cards, name='view_cards'),
 ]

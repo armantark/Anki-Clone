@@ -35,26 +35,19 @@ def index(request):
 
 
 def manage_words(request, word_id=None):
-    # Retrieve the Word instance with the given ID, or create a new one if no word_id is provided
+    word_id = request.POST.get('word_id')
     word = get_object_or_404(Word, id=word_id) if word_id else Word()
+    if request.method == 'POST':
+        form = WordForm(request.POST, instance=word)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(request.path_info)
+    else:
+        form = WordForm(instance=word or Word())
 
-    # Create a WordForm instance with the submitted data and the current Word instance if it's a POST request,
-    # otherwise create an empty WordForm instance with the current Word
-    form = WordForm(request.POST, instance=word) if request.method == 'POST' else WordForm(instance=word)
-
-    # Check if the request method is POST (i.e. form submission) and if the form data is valid
-    if request.method == 'POST' and form.is_valid():
-        # Save the Word instance with the submitted data
-        form.save()
-
-        # Redirect the user same page
-        return HttpResponseRedirect(request.path_info)
-
-    # Retrieve all words for displaying
     words = Word.objects.all()
-
-    # Render the manage_words template with the form, words, and current word instances
     return render(request, 'flashcards/manage_words.html', {'form': form, 'words': words, 'word': word})
+
 
 
 @require_POST
