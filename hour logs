@@ -7,7 +7,7 @@
 5:00-5:45, 9:45-10:30 pm Wednesday May 10 (fixing delete functionality)
 7:00-9:30 pm (I took a few breaks, let's count it as 2 hours) Thursday May 11 (debugging update functionality, adding hovering capabilities, several bugs and UI changes, AJAX calls)
 9:15-10:30 am Friday May 12 (made update functionality work, added about page, updated some docs, sorting by ID, etc.)
-1:45-3:15 pm Friday May 12 (fixing remaining bugs, uploading online)
+1:45-3:30 pm Friday May 12 (fixing remaining bugs, uploading online)
 
 Optional features implemented:
 - using specific stack (Django + Postgres, HTML+CSS+Django hooks for frontend atm)
