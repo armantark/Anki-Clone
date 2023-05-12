@@ -10,21 +10,29 @@
         <h4>Create New Word</h4>
         <form method="post" action="">
             {% csrf_token %}
-            <label for="word">Word:</label>
-            <input type="text" name="word" id="create-word" required>
 
-            <br><br>
-            <label for="definition">Definition:</label>
-            <textarea name="definition" id="create-definition" required></textarea>
-            <br>
-            <div style="display: flex">
-                <input type="submit" value="Create Word">
-                {% if form.word.errors %}
-                    <div class="alert alert-warning">
-                        {{ form.word.errors }}
-                    </div>
-                {% endif %}
+            <div style="display: flex; align-content: space-around">
+                <label for="word">Word:</label>
+                <input type="text" name="word" id="create-word" required
+       style="height: 25px; margin-left: 10px; margin-right: 10px; padding-bottom: 5px;">
+                <div class="alert-container" style="height: 25px; display: flex; align-items: center;">
+                    {% if form.word.errors %}
+                        <div class="alert alert-warning custom-alert" role="alert">
+                            {{ form.word.errors }}
+                        </div>
+                    {% endif %}
+                </div>
             </div>
+            <br>
+            <div style="display: flex; align-content: center">
+                <label for="definition">Definition:</label>
+                <textarea name="definition" id="create-definition" required
+                          style="height: 50px; margin-left: 10px"></textarea>
+            </div>
+
+
+            <br>
+            <input type="submit" value="Create Word" style="height: 25px;">
 
         </form>
     </div>

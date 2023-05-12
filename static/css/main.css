@@ -15,5 +15,33 @@
 
 .delete-button:hover {
     color: #ff0000;
-    transition: background-color 0.5s; /* Adjust the duration of the fade effect */
+    transition: color 0.5s; /* Adjust the duration of the fade effect */
+}
+
+.custom-alert {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.custom-alert ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.custom-alert li {
+    padding: 0;
+    margin: 0;
+}
+
+.alert-container {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
 }
