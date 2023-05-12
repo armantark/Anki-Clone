@@ -210,12 +210,12 @@
         const createWordInput = document.querySelector('#create-word');
 
         // Add an event listener for the keyup event
-        createWordInput.addEventListener('keyup', debounce(function (event) {
+        createWordInput.addEventListener('keyup', function (event) {
             // Get the current value of the input field
             const word = event.target.value;
 
             // Make an AJAX call to check if the word already exists
-            fetch(`{% url 'flashcards:check_word' %}?word=\${word}`)
+            fetch(`{% url 'flashcards:check_word' %}?word=${word}`)
                 .then(response => response.json())
                 .then(data => {
                     // Update the input field value with the response
@@ -236,40 +236,7 @@
                         alertContainer.appendChild(alert);
                     }
                 });
-
-
-        }, 300))
-
-        // This function creates a debounced version of a given function.
-        // The debounced function will be called after a specified wait time has passed since the last invocation.
-        // This can be useful for delaying the execution of a function that might be called frequently,
-        // such as event handlers for user input or window resizing.
-        function debounce(func, wait) {
-            // The timeout variable will be used to store the reference to the setTimeout call.
-            let timeout;
-
-            // The debounced function is returned as a closure, so it can access the timeout variable.
-            return function () {
-                // Store the current context (the value of 'this') and arguments to be used later.
-                const context = this;
-                const args = arguments;
-
-                // This function will be called after the wait time has passed.
-                const later = function () {
-                    // Clear the timeout reference, indicating that the debounced function is not waiting anymore.
-                    timeout = null;
-
-                    // Call the original function with the stored context and arguments.
-                    func.apply(context, args);
-                };
-
-                // Clear any existing timeout, effectively resetting the wait time.
-                clearTimeout(timeout);
-
-                // Set a new timeout to call the 'later' function after the specified wait time.
-                timeout = setTimeout(later, wait);
-            };
-        }
+        });
 
 
     </script>
