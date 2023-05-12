@@ -1,0 +1,30 @@
+<!-- flashcards/templates/flashcards/about.html -->
+{% extends "base.html" %}
+
+{% block title %} - About{% endblock %}
+
+{% block content %}
+    <h1>About</h1>
+    <p>Welcome to our flashcard application! This application is designed to help you learn and review words effectively using a system of spaced repetition.</p>
+
+    <h2>How It Works</h2>
+
+    <h3>Admin Interface</h3>
+    <ul>
+        <li>Create tool: This tool allows you to add new words and their definitions to the system.</li>
+        <li>View cards tool: This tool displays all the words in the system, along with their current bin, the time until their next review, and the number of times they have been answered incorrectly.</li>
+    </ul>
+
+    <h3>Flashcard Logic</h3>
+    <p>Words in the system are organized into 12 bins, representing increasing levels of mastery. Each word starts out in bin 0. If you answer a word correctly, it moves up to the next bin. If you answer a word incorrectly, it goes back to bin 1. The bins are associated with different timespans, which determine the amount of time to wait before the next review of that word.</p>
+
+    <h3>Reviewing Words</h3>
+    <p>Words with 0 time remaining are reviewed first. If all words have positive timers, new words from bin 0 are introduced for review. If there are no words in bin 0 and all words still have time remaining, a message is displayed: "You are temporarily done; please come back later to review more words."</p>
+
+    <h3>Forgetting Words</h3>
+    <p>If you answer a word incorrectly 10 times in total, it is moved to a "hard to remember" bin and is never shown again. If all words are either in the last bin or in the "hard to remember" bin, a message is displayed: "You have no more words to review; you are permanently done!"</p>
+
+    <h3>User Interaction</h3>
+    <p>When you load the app, you are shown a word. You can click "Show Definition" to see the definition of the word. After seeing the definition, you can click "I got it" if you knew the word, or "I did not get it" if you didn't. Status messages may also be displayed as defined above. The user interface is simple and utilitarian.</p>
+
+{% endblock %}

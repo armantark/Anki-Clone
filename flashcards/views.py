@@ -75,3 +75,7 @@ def view_cards(request):
     cards = Word.objects.all().order_by('id')
     return render(request, 'flashcards/view_cards.html',
                   {'cards': cards, 'bin_time_mapping': bin_time_mapping, 'DEBUG': settings.DEBUG})
+
+
+def about(request):
+    return render(request, 'flashcards/about.html')

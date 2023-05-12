@@ -20,4 +20,5 @@ urlpatterns = [
     path('check_word/', views.check_word, name='check_word'),
     # Create a URL pattern for the view_cards view
     path('view_cards/', views.view_cards, name='view_cards'),
+    path('about/', views.about, name='about'),
 ]
