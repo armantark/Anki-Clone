@@ -5,12 +5,13 @@
 7:30-8:45 Monday May 8 (refactoring and commenting a little, bootstrap)
 8:00-9:15 Tuesday May 9 (continuing to add comments, continuous integration testing, adding -RUD to admin page)
 5:00-5:45, 9:45-10:30 pm Wednesday May 10 (fixing delete functionality)
-7:00-9:30 pm (I took a few breaks, let's count it as 1.75 hours) Thursday May 11 (debugging update functionality, adding hovering capabilities, several bugs and UI changes, AJAX calls)
-9:15- Friday May 12
+7:00-9:30 pm (I took a few breaks, let's count it as 2 hours) Thursday May 11 (debugging update functionality, adding hovering capabilities, several bugs and UI changes, AJAX calls)
+9:15-10:30 am Friday May 12 (made update functionality work, added about page, updated some docs, sorting by ID, etc.)
+
 Optional features implemented:
 - using specific stack (Django + Postgres, HTML+CSS+Django hooks for frontend atm)
 - documentation (comments and readme)
 - automated testing (GitHub Actions)
-- AJAX
+- AJAX (WIP)
 - Better looking UI
 - CRUD capabilities
