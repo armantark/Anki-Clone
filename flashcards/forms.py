@@ -8,21 +8,18 @@ from .models import Word
 
 # Define a custom form class called WordForm that inherits from ModelForm
 class WordForm(ModelForm):
-    warning = forms.CharField(max_length=255, required=False, widget=forms.HiddenInput())
+    duplicate_warning = forms.CharField(max_length=255, required=False, widget=forms.HiddenInput())
+
     # Specify the Meta class within WordForm to provide model and fields information
 
     class Meta:
         # Set the model for this form to be the Word model
         model = Word
         # Specify the fields to be included in the form
-        fields = ['word', 'definition', 'warning']
+        fields = ['word', 'definition', 'duplicate_warning']
 
-    # todo: make this work again
-    def clean(self):
-        cleaned_data = super().clean()
-        word = cleaned_data.get('word')
-
+    def clean_word(self):
+        word = self.cleaned_data.get('word')
         if Word.objects.filter(word=word).exists():
-            cleaned_data['warning'] = 'Warning - word already exists, adding anyway'
-
-        return cleaned_data
+            self.duplicate_warning = 'Warning - word already exists, adding anyway'
+        return word

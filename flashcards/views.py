@@ -1,5 +1,6 @@
 # Import necessary modules and functions
 from django.conf import settings
+from django.contrib import messages
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -41,13 +42,17 @@ def manage_words(request, word_id=None):
     if request.method == 'POST':
         form = WordForm(request.POST, instance=word)
         if form.is_valid():
+            # Check for duplicates here
+            if Word.objects.filter(word=form.cleaned_data.get('word')).exists():
+                messages.warning(request, 'Warning - word already exists, adding anyway')
             form.save()
             return HttpResponseRedirect(request.path_info)
     else:
         form = WordForm(instance=word or Word())
-
     words = Word.objects.all().order_by('id')
-    return render(request, 'flashcards/manage_words.html', {'form': form, 'words': words, 'word': word})
+    duplicate_warning = getattr(form, 'duplicate_warning', None)
+    return render(request, 'flashcards/manage_words.html',
+                  {'form': form, 'words': words, 'word': word, 'duplicate_warning': duplicate_warning})
 
 
 
@@ -68,6 +73,7 @@ def view_cards(request):
     # Make all cards ready for review in DEBUG mode
     if settings.DEBUG and request.method == 'POST' and request.POST.get('make_ready'):
         cards = Word.objects.exclude(bin__in=[-1, 11])  # Exclude words in bins -1 and 11
+        cards = cards.filter(next_review__gt=timezone.now())
         for card in cards:
             card.next_review = timezone.now()
             card.save()

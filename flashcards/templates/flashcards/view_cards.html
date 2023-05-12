@@ -16,9 +16,11 @@
     
     <!-- Check if DEBUG is true and display the 'Make Ready' button -->
     {% if DEBUG %}
+
         <form method="post">
             {% csrf_token %}
             <button type="submit" name="make_ready" value="true" class="btn btn-primary">Make Ready</button>
+            <label style="color: #f5dd5d" for="make_ready">(debugging only, please set Django flag to prod)</label>
         </form>
     {% endif %}
     

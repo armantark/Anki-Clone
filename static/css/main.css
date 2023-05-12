@@ -24,8 +24,7 @@
     justify-content: center;
     align-items: center;
     height: 40px;
-    padding-bottom: 5px;
-    padding-top: 5px;
+    padding: 5px;
 }
 
 .custom-alert ul {

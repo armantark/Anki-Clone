@@ -1,9 +1,10 @@
+import datetime
+
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
 from .models import Word
-import datetime
 
 
 class AdminInterfaceTests(TestCase):
@@ -167,14 +168,14 @@ class UserInteractionTests(TestCase):
         word2 = Word.objects.create(word='test2', definition='test_definition2', bin=0)
 
         # Test if clicking "I did not get it" processes the response correctly for the first word
-        response_not_got_it = self.client.post(reverse('flashcards:index'),
-                                               {'got_it': 'false', 'word_id': self.word.id})
+        self.client.post(reverse('flashcards:index'),
+                         {'got_it': 'false', 'word_id': self.word.id})
         self.word.refresh_from_db()
         self.assertEqual(self.word.bin, 1)  # The word should move from bin 0 to bin 1
         self.assertEqual(self.word.incorrect_count, 1)  # The incorrect_count should increment by 1
 
         # Test if clicking "I got it" processes the response correctly for the second word
-        response_got_it = self.client.post(reverse('flashcards:index'), {'got_it': 'true', 'word_id': word2.id})
+        self.client.post(reverse('flashcards:index'), {'got_it': 'true', 'word_id': word2.id})
         word2.refresh_from_db()
         self.assertEqual(word2.bin, 1)  # The word should move from bin 0 to bin 1
 
