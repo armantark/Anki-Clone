@@ -8,18 +8,20 @@
         <h1>{{ word.word }}</h1>
 
         <!-- Button to show the definition of the word -->
-        <button id="show-definition-button">Show Definition</button>
+        <button id="show-definition-button" type="button" class="btn btn-primary">Show Definition</button>
+
 
         <!-- Hidden div containing the definition and buttons for user input -->
         <div id="definition" style="display:none;">
+            <br>
             <!-- Display the definition of the word -->
             <p>{{ word.definition }}</p>
 
             <!-- Form for submitting user input (got it/didn't get it) -->
             <form method="post">
                 {% csrf_token %}
-                <button type="submit" name="got_it" value="true">I got it</button>
-                <button type="submit" name="got_it" value="false">I did not get it</button>
+                <button type="submit" name="got_it" value="true" class="btn btn-success btn-sm">I got it</button>
+                <button type="submit" name="got_it" value="false" class="btn btn-danger btn-sm">I did not get it</button>
             </form>
         </div>
 

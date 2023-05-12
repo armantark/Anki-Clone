@@ -14,7 +14,7 @@
             <div style="display: flex; align-content: space-around">
                 <label for="word">Word:</label>
                 <input type="text" name="word" id="create-word" required
-       style="height: 25px; margin-left: 10px; margin-right: 10px; padding-bottom: 5px;">
+                       style="height: 25px; margin-left: 10px; margin-right: 10px; padding-bottom: 5px;">
                 <div class="alert-container" style="height: 25px; display: flex; align-items: center;">
                     {% if form.word.errors %}
                         <div class="alert alert-warning custom-alert" role="alert">
@@ -32,55 +32,59 @@
 
 
             <br>
-            <input type="submit" value="Create Word" style="height: 25px;">
+            <input type="submit" value="Create Word" class="btn btn-primary">
 
         </form>
     </div>
     <div style="display: flex; justify-content: flex-start">
 
-        <div>
-            <!-- List of existing words -->
-            <h4>Existing Words</h4>
-            <ul id="word-list" style="padding-left: 0; margin-top: 0;">
-                {% for word in words %}
-                    <div>
-                        <li data-id="{{ word.id }}" data-word="{{ word.word }}" data-definition="{{ word.definition }}"
-                            style="display: flex; align-items: center;">
-                            <a href="javascript:void(0)" class="word-link">{{ word.word }} - {{ word.definition }}</a>
-                            <!-- todo: add hovering behavior -->
-                            <form method="post" action="{% url 'flashcards:delete_word' word.id %}" class="delete-form"
-                                  style="margin-left: -5px;">
-                                {% csrf_token %}
-                                <button class="delete-button" type="submit">
-                                    <i class="fa-regular fa-circle-xmark"></i>
-                                </button>
-                            </form>
-                        </li>
-                    </div>
-                {% endfor %}
-            </ul>
-        </div>
+    <div>
+        <!-- List of existing words -->
+        <h4>Existing Words</h4>
+        <ul id="word-list" style="padding-left: 0; margin-top: 0;">
+            {% for word in words %}
+                <div>
+                    <li data-id="{{ word.id }}" data-word="{{ word.word }}" data-definition="{{ word.definition }}"
+                        style="display: flex; align-items: center;">
+                        <a href="javascript:void(0)" class="word-link">{{ word.word }} - {{ word.definition }}</a>
+                        <form method="post" action="{% url 'flashcards:delete_word' word.id %}" class="delete-form"
+                              style="margin-left: -5px;">
+                            {% csrf_token %}
+                            <button class="delete-button" type="submit">
+                                <i class="fa-regular fa-circle-xmark"></i>
+                            </button>
+                        </form>
+                    </li>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
 
-        <div style="margin-left: 10px">
-            <!-- Form for updating a word (hidden by default) -->
-            <h4 id="update-heading" style="display: none;">Update Word</h4>
-            {% if word and word.id %}
-                <form method="post" action="{% url 'flashcards:manage_words_with_id' word.id %}"
-                      id="update-form" style="display: none;">
-            {% else %}
-                <form method="post" action="{% url 'flashcards:manage_words' %}" id="update-form"
-                      style="display: none;">
-            {% endif %}
-            {% csrf_token %}
+    <div style="margin-left: 10px">
+        <!-- Form for updating a word (hidden by default) -->
+        <h4 id="update-heading" style="display: none;">Update Word</h4>
+        {% if word and word.id %}
+            <form method="post" action="{% url 'flashcards:manage_words_with_id' word.id %}"
+                  id="update-form" style="display: none;">
+        {% else %}
+            <form method="post" action="{% url 'flashcards:manage_words' %}" id="update-form"
+                  style="display: none;">
+        {% endif %}
+        {% csrf_token %}
+        <div style="display: flex; align-content: space-around">
             <label for="word">Word:</label>
-            <input type="text" name="word" id="update-word" required>
-            <br><br>
-            <label for="definition">Definition:</label>
-            <textarea name="definition" id="update-definition" required></textarea>
-            <br>
-            <input type="submit" value="Update Word">
-            </form>
+            <input type="text" name="word" id="update-word" required
+                   style="height: 25px; margin-left: 10px; margin-right: 10px; padding-bottom: 5px;">
         </div>
+        <br>
+        <div style="display: flex; align-content: center">
+            <label for="definition">Definition:</label>
+            <textarea name="definition" id="update-definition" required
+                      style="height: 50px; margin-left: 10px"></textarea>
+        </div>
+        <br>
+        <input type="submit" value="Update Word" class="btn btn-primary">
+        </form>
 
     </div>
 {% endblock %}
