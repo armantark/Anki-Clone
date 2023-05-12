@@ -3,3 +3,4 @@ dj-config-url==0.1.1
 Django==4.2.1
 psycopg2-binary==2.9.6
 sqlparse==0.4.4
+pip==23.1.2
