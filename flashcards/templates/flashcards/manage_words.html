@@ -22,8 +22,6 @@
                 <!-- The input field. The 'required' attribute means that the form cannot be submitted without entering a word. -->
                 <input type="text" name="word" id="create-word" required
                        style="height: 25px; margin-left: 10px; margin-right: 10px; padding-bottom: 5px;">
-                <!-- A hidden input field for any warning messages. -->
-                <input type="hidden" name="warning" id="warning" value="{{ form.warning.value }}">
                 <!-- A container for displaying any warning messages. -->
                 <div class="alert-container" id="word-alert" style="height: 25px; display: flex; align-items: center;">
                     <!-- If there are any messages (such as warning messages), they are displayed here. -->
@@ -206,37 +204,37 @@
         });
 
         // todo: make this work
-        // Get the create word input field
-        const createWordInput = document.querySelector('#create-word');
-
-        // Add an event listener for the keyup event
-        createWordInput.addEventListener('keyup', function (event) {
-            // Get the current value of the input field
-            const word = event.target.value;
-
-            // Make an AJAX call to check if the word already exists
-            fetch(`{% url 'flashcards:check_word' %}?word=${word}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Update the input field value with the response
-                    createWordInput.value = data.exists ? '' : word;
-
-                    // Get the alert container
-                    const alertContainer = document.querySelector('#word-alert');
-
-                    // Remove any existing alerts
-                    alertContainer.innerHTML = '';
-
-                    // If the word already exists, show an alert
-                    if (data.exists) {
-                        const alert = document.createElement('div');
-                        alert.classList.add('alert', 'alert-warning', 'custom-alert');
-                        alert.setAttribute('role', 'alert');
-                        alert.textContent = 'This word already exists.';
-                        alertContainer.appendChild(alert);
-                    }
-                });
-        });
+        {#// Get the create word input field#}
+        {#const createWordInput = document.querySelector('#create-word');#}
+        {##}
+        {#// Add an event listener for the keyup event#}
+        {#createWordInput.addEventListener('keyup', function (event) {#}
+        {#    // Get the current value of the input field#}
+        {#    const word = event.target.value;#}
+        {##}
+        {#    // Make an AJAX call to check if the word already exists#}
+        {#    fetch(`{% url 'flashcards:check_word' %}?word=${word}`)#}
+        {#        .then(response => response.json())#}
+        {#        .then(data => {#}
+        {#            // Update the input field value with the response#}
+        {#            createWordInput.value = data.exists ? '' : word;#}
+        {##}
+        {#            // Get the alert container#}
+        {#            const alertContainer = document.querySelector('#word-alert');#}
+        {##}
+        {#            // Remove any existing alerts#}
+        {#            alertContainer.innerHTML = '';#}
+        {##}
+        {#            // If the word already exists, show an alert#}
+        {#            if (data.exists) {#}
+        {#                const alert = document.createElement('div');#}
+        {#                alert.classList.add('alert', 'alert-warning', 'custom-alert');#}
+        {#                alert.setAttribute('role', 'alert');#}
+        {#                alert.textContent = 'This word already exists.';#}
+        {#                alertContainer.appendChild(alert);#}
+        {#            }#}
+        {#        });#}
+        {# });#}
 
 
     </script>
