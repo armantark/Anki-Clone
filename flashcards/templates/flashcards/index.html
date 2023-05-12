@@ -5,7 +5,11 @@
 {% block content %}
     {% if word %}
         <!-- Display the word to review -->
-        <h1>{{ word.word }}</h1>
+        <h1>{{ word.word }}
+            {% if word.is_duplicated %}
+                <small>({{ word.id }})</small>
+            {% endif %}
+        </h1>
 
         <!-- Button to show the definition of the word -->
         <button id="show-definition-button" type="button" class="btn btn-primary">Show Definition</button>

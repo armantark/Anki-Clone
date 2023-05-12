@@ -48,7 +48,7 @@
                 <div>
                     <li data-id="{{ word.id }}" data-word="{{ word.word }}" data-definition="{{ word.definition }}"
                         style="display: flex; align-items: center;">
-                        <a href="javascript:void(0)" class="word-link">{{ word.word }} - {{ word.definition }}</a>
+                        <a href="javascript:void(0)" class="word-link">{{ word.id }}: {{ word.word }} - {{ word.definition }}</a>
                         <form method="post" action="{% url 'flashcards:delete_word' word.id %}" class="delete-form"
                               style="margin-left: -5px;">
                             {% csrf_token %}
@@ -142,6 +142,8 @@
                 document.querySelector('#update-form').style.display = 'block';
             });
         });
+
+        // todo: make this work
         // Get the create word input field
         const createWordInput = document.querySelector('#create-word');
 

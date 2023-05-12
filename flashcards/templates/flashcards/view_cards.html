@@ -26,6 +26,7 @@
         <!-- Table header with column names -->
         <thead>
         <tr>
+            <th>ID</th>
             <th>Word</th>
             <th>Definition</th>
             <th>Bin</th>
@@ -39,6 +40,7 @@
         <!-- Loop through each card and display its data in a table row -->
         {% for card in cards %}
             <tr>
+                <td>{{ card.id }}</td>
                 <td>{{ card.word }}</td>
                 <td>{{ card.definition }}</td>
                 <td>

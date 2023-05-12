@@ -23,6 +23,6 @@ class WordForm(ModelForm):
         word = cleaned_data.get('word')
 
         if Word.objects.filter(word=word).exists():
-            cleaned_data['warning'] = 'Warning - word already exists'
+            cleaned_data['warning'] = 'Warning - word already exists, adding anyway'
 
         return cleaned_data

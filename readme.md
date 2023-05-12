@@ -10,16 +10,13 @@ Anki Clone is a simple flashcard application, currently a work in progress. It i
 
 ## Features
 
-* Admin interface to create new words and definitions.
-* View cards tool that displays all cards and their current status (bin, time to next appearance, number of times answered incorrectly).
-* Flashcard logic that moves cards between bins based on the user's responses and manages review sessions.
-* Reviewing words based on time and priority, with a focus on words that are due for review or have been answered incorrectly.
-* Forgetting words feature, which moves words that have been answered incorrectly 10 times to a "hard to remember" bin.
+* **Admin Interface**: Allows administrators to manage flashcards. They can create, view, update, and delete words and definitions. It also provides a validation to warn against the creation of duplicate words (but still allows it).
+* **View Cards Tool**: Displays all flashcards and their current status (bin, time to next appearance, number of times answered incorrectly). Cards are sorted by their ID for easy navigation.
+* **Flashcard Logic**: Moves cards between bins based on the user's responses and manages review sessions.
+* **Reviewing Words**: Words can be reviewed based on time and priority, with a focus on words that are due for review or have been answered incorrectly.
+* **Forgetting Words Feature**: Moves words that have been answered incorrectly 10 times to a "hard to remember" bin.
+* **ID Display for Duplicate Words**: In the case of duplicate words, their IDs are displayed next to them for differentiation.
 
 ## Getting Started
 
 Please note that this project is still under development and may not be ready for production use. Instructions for setting up the development environment will be provided once the project reaches a more stable state.
-
----
-
-Feel free to modify and expand the README.md file as the project evolves. This should provide a starting point to describe the purpose, technologies, and main features of the Anki Clone application.

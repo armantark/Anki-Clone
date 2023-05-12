@@ -22,6 +22,7 @@ def index(request):
 
     # Select the first word to review
     word = words_to_review.first()
+    word.is_duplicated = Word.objects.filter(word=word.word).count() > 1
 
     # Handle user input (got it/didn't get it) using POST request
     if request.method == 'POST':
@@ -45,7 +46,7 @@ def manage_words(request, word_id=None):
     else:
         form = WordForm(instance=word or Word())
 
-    words = Word.objects.all()
+    words = Word.objects.all().order_by('id')
     return render(request, 'flashcards/manage_words.html', {'form': form, 'words': words, 'word': word})
 
 
@@ -71,6 +72,6 @@ def view_cards(request):
             card.next_review = timezone.now()
             card.save()
     # Get all cards and render them in the view
-    cards = Word.objects.all()
+    cards = Word.objects.all().order_by('id')
     return render(request, 'flashcards/view_cards.html',
                   {'cards': cards, 'bin_time_mapping': bin_time_mapping, 'DEBUG': settings.DEBUG})
