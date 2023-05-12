@@ -5,21 +5,32 @@
 {% block content %}
     <!-- Heading for the manage words page -->
     <h1>Manage Words</h1>
+    <!-- This div contains the form for creating a new word. -->
     <div>
-        <!-- Form for creating a word -->
+        <!-- The heading for the form. -->
         <h4>Create New Word</h4>
+
+        <!-- The form itself. When submitted, it sends a POST request to the 'manage_words' URL. -->
         <form method="post" action="{% url 'flashcards:manage_words' %}">
+            <!-- The CSRF token is a security feature that prevents cross-site request forgery attacks. -->
             {% csrf_token %}
 
+            <!-- This div contains the input field for the new word. -->
             <div style="display: flex; align-content: space-around">
+                <!-- The label for the input field. -->
                 <label for="word">Word:</label>
+                <!-- The input field. The 'required' attribute means that the form cannot be submitted without entering a word. -->
                 <input type="text" name="word" id="create-word" required
                        style="height: 25px; margin-left: 10px; margin-right: 10px; padding-bottom: 5px;">
+                <!-- A hidden input field for any warning messages. -->
                 <input type="hidden" name="warning" id="warning" value="{{ form.warning.value }}">
+                <!-- A container for displaying any warning messages. -->
                 <div class="alert-container" id="word-alert" style="height: 25px; display: flex; align-items: center;">
+                    <!-- If there are any messages (such as warning messages), they are displayed here. -->
                     {% if messages %}
                         <ul class="messages">
                             {% for message in messages %}
+                                <!-- Each message is displayed in a list item. The message's tags are used as CSS classes for the list item. -->
                                 <li{% if message.tags %}
                                     class="custom-alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
                             {% endfor %}
@@ -29,34 +40,53 @@
                 </div>
             </div>
 
+            <!-- A line break for spacing. -->
             <br>
+            <!-- This div contains the input field for the word's definition. -->
             <div style="display: flex; align-content: center">
+                <!-- The label for the definition input field. -->
                 <label for="definition">Definition:</label>
+                <!-- The input field for the definition. -->
                 <textarea name="definition" id="create-definition" required
                           style="height: 50px; margin-left: 10px"></textarea>
             </div>
 
-
+            <!-- Another line break for spacing. -->
             <br>
+            <!-- The submit button for the form. -->
             <input type="submit" value="Create Word" class="btn btn-primary">
 
         </form>
     </div>
+
     <div style="display: flex; justify-content: flex-start">
 
+    <!-- This div contains the list of existing words. -->
     <div>
-        <!-- List of existing words -->
+        <!-- The heading for the list. -->
         <h4>Existing Words</h4>
+
+        <!-- The list itself. Each item in the list is a word. -->
         <ul id="word-list" style="padding-left: 0; margin-top: 0;">
+            <!-- This loop iterates over each word in the 'words' variable (which should be a list of words). -->
             {% for word in words %}
                 <div>
+                    <!-- Each word is displayed in a list item. The data attributes store the word's ID, word itself, and its definition. -->
                     <li data-id="{{ word.id }}" data-word="{{ word.word }}" data-definition="{{ word.definition }}"
                         style="display: flex; align-items: center;">
+
+                        <!-- The word's ID, word, and definition are displayed in a link. Clicking the link does not navigate to a new page. -->
                         <a href="javascript:void(0)" class="word-link">{{ word.id }}: {{ word.word }}
                             - {{ word.definition }}</a>
+
+                        <!-- This form is for deleting the word. When submitted, it sends a POST request to the 'delete_word' URL, with the word's ID as a parameter. -->
                         <form method="post" action="{% url 'flashcards:delete_word' word.id %}" class="delete-form"
                               style="margin-left: -5px;">
+
+                            <!-- The CSRF token is a security feature that prevents cross-site request forgery attacks. -->
                             {% csrf_token %}
+
+                            <!-- The submit button for the form. It is styled as an 'X' icon. -->
                             <button class="delete-button" type="submit">
                                 <i class="fa-regular fa-circle-xmark"></i>
                             </button>
@@ -67,37 +97,58 @@
         </ul>
     </div>
 
+
+    <!-- This div contains the form for updating a word. It is indented slightly to the right. -->
     <div style="margin-left: 10px">
-        <!-- Form for updating a word (hidden by default) -->
+        <!-- The heading for the form. It is hidden by default, and should be shown when a word is selected for updating. -->
         <h4 id="update-heading" style="display: none;">Update Word</h4>
+
+        <!-- This is the form for updating a word. The action URL depends on whether a word is selected for updating. -->
         {% if word and word.id %}
+            <!-- If a word is selected, the form will send a POST request to the 'manage_words_with_id' URL, with the word's ID as a parameter. -->
             <form method="post" action="{% url 'flashcards:manage_words_with_id' word.id %}"
                   id="update-form" style="display: none;">
         {% else %}
+            <!-- If no word is selected, the form will send a POST request to the 'manage_words' URL. -->
             <form method="post" action="{% url 'flashcards:manage_words' %}" id="update-form"
                   style="display: none;">
         {% endif %}
+        <!-- The CSRF token is a security feature that prevents cross-site request forgery attacks. -->
         {% csrf_token %}
+
+        <!-- This hidden input field stores the ID of the word selected for updating. -->
         <input type="hidden" name="word_id" id="update-word-id">
+
+        <!-- This section displays the ID of the word selected for updating. -->
         <div style="display: flex; align-content: space-around">
             <label id="id-label">ID: {{ word.id }}</label>
         </div>
+
+        <!-- This section contains the input field for updating the word. -->
         <div style="display: flex; align-content: space-around">
             <label for="word">Word:</label>
             <input type="text" name="word" id="update-word" required
                    style="height: 25px; margin-left: 10px; margin-right: 10px; padding-bottom: 5px;">
         </div>
+
+        <!-- This line break creates some vertical space before the next section. -->
         <br>
+
+        <!-- This section contains the input field for updating the definition of the word. -->
         <div style="display: flex; align-content: center">
             <label for="definition">Definition:</label>
             <textarea name="definition" id="update-definition" required
                       style="height: 50px; margin-left: 10px"></textarea>
         </div>
+
+        <!-- This line break creates some vertical space before the submit button. -->
         <br>
+
+        <!-- The submit button for the form. When clicked, it will send the form data to the server. -->
         <input type="submit" value="Update Word" class="btn btn-primary">
         </form>
-
     </div>
+
 {% endblock %}
 
 {% block javascript %}
@@ -189,16 +240,33 @@
 
         }, 300))
 
+        // This function creates a debounced version of a given function.
+        // The debounced function will be called after a specified wait time has passed since the last invocation.
+        // This can be useful for delaying the execution of a function that might be called frequently,
+        // such as event handlers for user input or window resizing.
         function debounce(func, wait) {
+            // The timeout variable will be used to store the reference to the setTimeout call.
             let timeout;
+
+            // The debounced function is returned as a closure, so it can access the timeout variable.
             return function () {
+                // Store the current context (the value of 'this') and arguments to be used later.
                 const context = this;
                 const args = arguments;
+
+                // This function will be called after the wait time has passed.
                 const later = function () {
+                    // Clear the timeout reference, indicating that the debounced function is not waiting anymore.
                     timeout = null;
+
+                    // Call the original function with the stored context and arguments.
                     func.apply(context, args);
                 };
+
+                // Clear any existing timeout, effectively resetting the wait time.
                 clearTimeout(timeout);
+
+                // Set a new timeout to call the 'later' function after the specified wait time.
                 timeout = setTimeout(later, wait);
             };
         }

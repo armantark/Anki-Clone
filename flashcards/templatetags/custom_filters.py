@@ -4,6 +4,7 @@ from django import template
 # Create a new instance of the template Library
 register = template.Library()
 
+
 # Register a custom template filter using the decorator syntax
 @register.filter
 def get_item(dictionary, key):

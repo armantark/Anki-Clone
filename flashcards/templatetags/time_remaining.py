@@ -5,8 +5,10 @@ from django.utils import timezone
 # Create a template library instance
 register = template.Library()
 
+
 # Register a custom filter for the template library
 @register.filter
+# This is used to show the time remaining or how long a word has been ready in the view_cards table
 def time_remaining(value):
     # Return empty string if the input value is None or empty
     if not value:

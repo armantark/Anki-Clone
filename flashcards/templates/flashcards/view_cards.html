@@ -13,8 +13,8 @@
 {% block content %}
     <!-- Display the heading 'View Cards' -->
     <h1>View Cards</h1>
-    
-    <!-- Check if DEBUG is true and display the 'Make Ready' button -->
+
+    <!-- Check if DEBUG is true and display the 'Make Ready' button, which just sets all the positive ready times to 0 -->
     {% if DEBUG %}
 
         <form method="post">
