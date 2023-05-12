@@ -14,7 +14,6 @@ from pathlib import Path
 
 import dj_database_url
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # Base directory of the Django project
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -80,14 +79,9 @@ WSGI_APPLICATION = 'Anki_Clone.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 # PostgreSQL database settings
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'anki_clone_db',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL', 'postgres://postgres:password@localhost:5432/anki_clone_db')
+    )
 }
 
 if os.environ.get('DATABASE_URL'):
