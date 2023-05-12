@@ -1,6 +1,6 @@
 # Import necessary modules and functions
 from django.conf import settings
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
@@ -35,38 +35,20 @@ def index(request):
 
 
 def manage_words(request, word_id=None):
-    form = None
-    # Check if a word_id is provided
-    if word_id:
-        # If so, retrieve the Word instance with the given ID, or return a 404 error if not found
-        word = get_object_or_404(Word, id=word_id)
-        # Check if the request method is POST (i.e. form submission)
-        if request.method == 'POST':
-            # Create a WordForm instance with the submitted data and the current Word instance
-            form = WordForm(request.POST, instance=word)
+    # Retrieve the Word instance with the given ID, or create a new one if no word_id is provided
+    word = get_object_or_404(Word, id=word_id) if word_id else Word()
 
-            # Check if the form data is valid
-            if form.is_valid():
-                # Save the Word instance with the submitted data
-                form.save()
+    # Create a WordForm instance with the submitted data and the current Word instance if it's a POST request,
+    # otherwise create an empty WordForm instance with the current Word
+    form = WordForm(request.POST, instance=word) if request.method == 'POST' else WordForm(instance=word)
 
-                # Redirect the user to the index page
-                return HttpResponseRedirect(request.path_info)
-        else:
-            # If the request method is not POST, create an empty WordForm instance with the current Word
-            form = WordForm(instance=word)
-    else:
-        # If no word_id is provided, create a new Word instance
-        word = Word()
-        # Check if the request method is POST (i.e. form submission)
-        if request.method == 'POST':
-            # Create a WordForm instance with the submitted data and the current Word instance
-            form = WordForm(request.POST, instance=word)
-            # Check if the form data is valid
-            if form.is_valid():
-                # Save the Word instance with the submitted data
-                form.save()
-                return HttpResponseRedirect(request.path_info)
+    # Check if the request method is POST (i.e. form submission) and if the form data is valid
+    if request.method == 'POST' and form.is_valid():
+        # Save the Word instance with the submitted data
+        form.save()
+
+        # Redirect the user same page
+        return HttpResponseRedirect(request.path_info)
 
     # Retrieve all words for displaying
     words = Word.objects.all()
@@ -80,6 +62,12 @@ def delete_word(request, word_id):
     word = get_object_or_404(Word, id=word_id)
     word.delete()
     return redirect('flashcards:manage_words')
+
+
+def check_word(request):
+    word = request.GET.get('word', '')
+    exists = Word.objects.filter(word__iexact=word).exists()
+    return JsonResponse({'exists': exists})
 
 
 def view_cards(request):

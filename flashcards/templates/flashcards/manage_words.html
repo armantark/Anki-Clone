@@ -15,7 +15,7 @@
                 <label for="word">Word:</label>
                 <input type="text" name="word" id="create-word" required
                        style="height: 25px; margin-left: 10px; margin-right: 10px; padding-bottom: 5px;">
-                <div class="alert-container" style="height: 25px; display: flex; align-items: center;">
+                <div class="alert-container" id="word-alert" style="height: 25px; display: flex; align-items: center;">
                     {% if form.word.errors %}
                         <div class="alert alert-warning custom-alert" role="alert">
                             {{ form.word.errors }}
@@ -137,6 +137,35 @@
                 document.querySelector('#update-form').style.display = 'block';
             });
         });
+        // Get the create word input field
+const createWordInput = document.querySelector('#create-word');
+
+// Add an event listener for the input event
+createWordInput.addEventListener('input', function (event) {
+    // Get the current value of the input field
+    const word = event.target.value;
+
+    // Make an AJAX call to check if the word already exists
+    fetch(`/check_word?word=\${word}`)
+        .then(response => response.json())
+        .then(data => {
+            // Get the alert container
+            const alertContainer = document.querySelector('#word-alert');
+
+            // Remove any existing alerts
+            alertContainer.innerHTML = '';
+
+            // If the word already exists, show an alert
+            if (data.exists) {
+                const alert = document.createElement('div');
+                alert.classList.add('alert', 'alert-warning', 'custom-alert');
+                alert.setAttribute('role', 'alert');
+                alert.textContent = 'This word already exists.';
+                alertContainer.appendChild(alert);
+            }
+        });
+});
+
     </script>
 {% endblock %}
 
