@@ -7,13 +7,13 @@
     margin: 5px;
 }
 
-.delete-button {
+.custom-button {
     border: none;
     background: none;
     color: #ff9580;
 }
 
-.delete-button:hover {
-    color: #ff0000;
+.custom-button:hover {
+    background-color: #ff0000;
     transition: background-color 0.5s; /* Adjust the duration of the fade effect */
 }
